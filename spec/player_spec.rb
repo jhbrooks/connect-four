@@ -10,9 +10,15 @@ describe Player do
       end
     end
 
-    context "when given more or less than 2 arguments" do
+    context "when given less than 2 arguments" do
       it "raises an ArgumentError" do
         expect{ Player.new }.to raise_error(ArgumentError)
+      end
+    end
+
+    context "when given more than 2 arguments" do
+      it "raises an ArgumentError" do
+        expect{ Player.new("a", "b", "c") }.to raise_error(ArgumentError)
       end
     end
   end
