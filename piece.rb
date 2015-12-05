@@ -6,6 +6,10 @@ class Piece
   end
 
   def ==(other)
-    player == other
+    begin
+      player == other.player
+    rescue(NoMethodError)
+      false
+    end
   end
 end

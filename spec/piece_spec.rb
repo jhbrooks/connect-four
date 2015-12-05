@@ -5,9 +5,7 @@ describe Piece do
     instance_double("Player", name: "a", mark: "\u25C9".encode("utf-8"))
   end
 
-  let(:piece) do  
-    Piece.new(dummy_player)
-  end
+  let(:piece) { Piece.new(dummy_player) }
 
   describe "#new" do
     context "when given 1 argument" do
@@ -16,15 +14,15 @@ describe Piece do
       end
     end
 
-    context "when given less than 1 argument" do
+    context "when given fewer than 1 argument" do
       it "raises an ArgumentError" do
-        expect{ Piece.new }.to raise_error(ArgumentError)
+        expect { Piece.new }.to raise_error(ArgumentError)
       end
     end
 
     context "when given more than 1 argument" do
       it "raises an ArgumentError" do
-        expect{ Piece.new(:a, :b) }.to raise_error(ArgumentError)
+        expect { Piece.new(:a, :b) }.to raise_error(ArgumentError)
       end
     end
   end
@@ -36,8 +34,14 @@ describe Piece do
   end
 
   describe "#==" do
-    it "compares using the Piece's player" do
-      expect(piece == dummy_player).to be(true)
+    it "compares using each object's player" do
+      expect(Piece.new(:a)).to eq(Piece.new(:a))
+    end
+
+    context "when the second object lacks a player" do
+      it "returns false" do
+        expect(Piece.new(:a) == :a).to be(false)
+      end
     end
   end
 end
