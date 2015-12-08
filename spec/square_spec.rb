@@ -1,11 +1,32 @@
 require "spec_helper.rb"
 
 describe Square do
-  let(:dummy_piece) do
-    instance_double("Piece", player: :a)
-  end
+  let(:empty_square) { Square.create_empty(1) }
+  let(:square) { Square.new(1, :a) }
 
-  let(:square) { Square.new(1, dummy_piece) }
+  describe ".create_empty" do
+    context "when given 1 argument" do
+      it "returns a Square object" do
+        expect(empty_square).to be_an_instance_of(Square)
+      end
+
+      it "returns an empty object" do
+        expect(empty_square.empty?).to be(true)
+      end
+    end
+
+    context "when given fewer than 1 argument" do
+      it "raises an ArgumentError" do
+        expect { Square.create_empty }.to raise_error(ArgumentError)
+      end
+    end
+
+    context "when given more than 1 argument" do
+      it "raises an ArgumentError" do
+        expect { Square.create_empty(:a, :b) }.to raise_error(ArgumentError)
+      end
+    end
+  end
 
   describe "#new" do
     context "when given 2 arguments" do
@@ -35,14 +56,14 @@ describe Square do
 
   describe "#piece" do
     it "returns the correct piece" do
-      expect(square.piece).to eq(dummy_piece)
+      expect(square.piece).to eq(:a)
     end
   end
 
   describe "#piece=" do
-    it "sets a new piece" do
-      square.piece = :a
-      expect(square.piece).to eq(:a)
+    it "correctly sets a new piece" do
+      square.piece = :b
+      expect(square.piece).to eq(:b)
     end
   end
 
@@ -63,12 +84,12 @@ describe Square do
 
   describe "#==" do
     it "compares using each object's piece" do
-      expect(Square.new(1, :a)).to eq(Square.new(2, :a))
+      expect(square).to eq(Square.new(2, :a))
     end
 
     context "when the second object lacks a piece" do
       it "returns false" do
-        expect(Square.new(1, :a) == :a).to be(false)
+        expect(square == :a).to be(false)
       end
     end
   end

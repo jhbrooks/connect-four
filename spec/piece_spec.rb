@@ -1,11 +1,7 @@
 require "spec_helper"
 
 describe Piece do
-  let(:dummy_player) do
-    instance_double("Player", name: "a", mark: "\u25C9".encode("utf-8"))
-  end
-
-  let(:piece) { Piece.new(dummy_player) }
+  let(:piece) { Piece.new(:a) }
 
   describe "#new" do
     context "when given 1 argument" do
@@ -29,18 +25,18 @@ describe Piece do
 
   describe "#player" do
     it "returns the correct player" do
-      expect(piece.player).to eq(dummy_player)
+      expect(piece.player).to eq(:a)
     end
   end
 
   describe "#==" do
     it "compares using each object's player" do
-      expect(Piece.new(:a)).to eq(Piece.new(:a))
+      expect(piece).to eq(Piece.new(:a))
     end
 
     context "when the second object lacks a player" do
       it "returns false" do
-        expect(Piece.new(:a) == :a).to be(false)
+        expect(piece == :a).to be(false)
       end
     end
   end
