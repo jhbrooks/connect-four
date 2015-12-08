@@ -22,6 +22,19 @@ class Board
     rows.all? { |row| row.empty? }
   end
 
+  def add_piece(horizontal_pos, piece)
+    piece_added = false
+    vertical_pos = 1
+    while piece_added == false && vertical_pos <= height
+      target_row = rows.select do |row|
+        row.vertical_pos == vertical_pos
+      end.first
+      piece_added = target_row.add_piece(horizontal_pos, piece)
+      vertical_pos += 1
+    end
+    piece_added
+  end
+
   def to_s
     dash_string = "#{'--' * 2}#{'---' * width}#{'-' * (width - 1)}"
     f_string = "#{dash_string}\n"

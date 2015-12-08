@@ -66,6 +66,112 @@ describe Board do
     end
   end
 
+  describe "#add_piece" do
+    let(:target_square) do
+      empty_row.squares.select do |square|
+        square.horizontal_pos == 2
+      end.first
+    end
+
+    let(:other_squares) do
+      empty_row.squares.select do |square|
+        square.horizontal_pos != 2
+      end
+    end
+
+    context "when the target column is empty" do
+      it "adds a piece to the correct row in that column" do
+        empty_board.add_piece(2, :a)
+        target_row = empty_board.rows.select do |row|
+          row.vertical_pos == 1
+        end.first
+        expect(target_row.empty?).to be(false)
+      end
+
+      it "doesn't add a piece to any row above that row" do
+        empty_board.add_piece(2, :a)
+        rows_above = empty_board.rows.select do |row|
+          row.vertical_pos > 1
+        end
+        expect(rows_above.all? { |row| row.empty? }).to be(true)
+      end
+
+      it "returns true" do
+        expect(empty_board.add_piece(2, :a)).to be(true)
+      end
+    end
+
+    context "when the target column is partially full" do
+      before (:each) do
+        empty_board.add_piece(2, :a)
+      end
+
+      it "adds a piece to the correct row in that column" do
+        empty_board.add_piece(2, :b)
+        target_row = empty_board.rows.select do |row|
+          row.vertical_pos == 2
+        end.first
+        expect(target_row.empty?).to be(false)
+      end
+
+      it "doesn't add a piece to any row above that row" do
+        empty_board.add_piece(2, :b)
+        rows_above = empty_board.rows.select do |row|
+          row.vertical_pos > 2
+        end
+        expect(rows_above.all? { |row| row.empty? }).to be(true)
+      end
+
+      it "doesn't change a piece in any row below that row" do
+        empty_board.add_piece(2, :b)
+        rows_below = empty_board.rows.select do |row|
+          row.vertical_pos < 2
+        end
+        rows_below_squares = rows_below.map do |row|
+          row.squares
+        end
+        squares_below = rows_below_squares.map do |squares|
+          squares.select do |square|
+            square.horizontal_pos == 2
+          end.first
+        end
+        expect(squares_below.all? { |square| square.piece == :a }).to be(true)
+      end
+
+      it "returns true" do
+        expect(empty_board.add_piece(2, :b)).to be(true)
+      end
+    end
+
+    context "when the target column is full" do
+      before (:each) do
+        empty_board.height.times do
+          empty_board.add_piece(2, :a)
+        end
+      end
+
+      it "doesn't change a piece in any row" do
+        empty_board.add_piece(2, :b)
+        rows_below = empty_board.rows.select do |row|
+          row.vertical_pos < empty_board.height + 1
+        end
+        rows_below_squares = rows_below.map do |row|
+          row.squares
+        end
+        squares_below = rows_below_squares.map do |squares|
+          squares.select do |square|
+            square.horizontal_pos == 2
+          end.first
+        end
+        expect(squares_below.all? { |square| square.piece == :a }).to be(true)
+      end
+
+      it "returns false" do
+        expect(empty_board.add_piece(2, :b)).to be(false)
+      end
+    end
+  end
+
   describe "#to_s" do
     it "returns a formatted string containing the Board's rows as strings" do
       expect(empty_board.to_s).to eq("-------------------------------\n"\

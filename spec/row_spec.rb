@@ -60,6 +60,56 @@ describe Row do
     end
   end
 
+  describe "#add_piece" do
+    let(:target_square) do
+      empty_row.squares.select do |square|
+        square.horizontal_pos == 2
+      end.first
+    end
+
+    let(:other_squares) do
+      empty_row.squares.select do |square|
+        square.horizontal_pos != 2
+      end
+    end
+
+    context "when the target square is empty" do
+      it "adds a piece to that square" do
+        empty_row.add_piece(2, :a)
+        expect(target_square.empty?).to be(false)
+      end
+
+      it "doesn't add a piece to any other squares" do
+        empty_row.add_piece(2, :a)
+        expect(other_squares.all? { |square| square.empty? }).to be(true)
+      end
+
+      it "returns true" do
+        expect(empty_row.add_piece(2, :a)).to be(true)
+      end
+    end
+
+    context "when the target square is full" do
+      before (:each) do
+        empty_row.add_piece(2, :a)
+      end
+
+      it "doesn't change that square's piece" do
+        empty_row.add_piece(2, :b)
+        expect(target_square.piece).to eq(:a)
+      end
+
+      it "doesn't add a piece to any other squares" do
+        empty_row.add_piece(2, :b)
+        expect(other_squares.all? { |square| square.empty? }).to be(true)
+      end
+
+      it "returns false" do
+        expect(empty_row.add_piece(2, :b)).to be(false)
+      end
+    end
+  end
+
   describe "#to_s" do
     it "returns a formatted string containing the Row's squares as strings" do
       expect(empty_row.to_s).to eq("||   |   |   |   |   |   |   ||")

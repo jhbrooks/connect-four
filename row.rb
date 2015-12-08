@@ -21,6 +21,18 @@ class Row
     squares.all? { |square| square.empty? }
   end
 
+  def add_piece(horizontal_pos, piece)
+    target_square = squares.select do |square|
+      square.horizontal_pos == horizontal_pos
+    end.first
+    if target_square.empty?
+      target_square.piece = piece
+      true
+    else
+      false
+    end
+  end
+
   def to_s
     f_string = "|| "
     f_string << (squares.map { |square| square.to_s }.join(" | "))
