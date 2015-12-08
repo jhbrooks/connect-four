@@ -3,7 +3,7 @@ class Square
   attr_accessor :piece
 
   def self.create_empty(horizontal_pos)
-    self.new(horizontal_pos, nil)
+    self.new(horizontal_pos, " ")
   end
 
   def initialize(horizontal_pos, piece)
@@ -12,7 +12,7 @@ class Square
   end
 
   def empty?
-    return true if piece.nil?
+    return true if piece == " "
     false
   end
 
@@ -22,5 +22,9 @@ class Square
     rescue(NoMethodError)
       false
     end
+  end
+
+  def to_s
+    "#{piece}"
   end
 end

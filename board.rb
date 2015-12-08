@@ -21,4 +21,11 @@ class Board
   def empty?
     rows.all? { |row| row.empty? }
   end
+
+  def to_s
+    dash_string = "#{'--' * 2}#{'---' * width}#{'-' * (width - 1)}"
+    f_string = "#{dash_string}\n"
+    f_string << (rows.map { |row| row.to_s }.join("\n#{dash_string}\n"))
+    f_string << "\n#{dash_string}"
+  end
 end

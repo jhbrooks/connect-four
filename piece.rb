@@ -12,4 +12,8 @@ class Piece
       false
     end
   end
+
+  def to_s
+    "#{player.mark}"
+  end
 end

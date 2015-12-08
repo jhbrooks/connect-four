@@ -20,4 +20,10 @@ class Row
   def empty?
     squares.all? { |square| square.empty? }
   end
+
+  def to_s
+    f_string = "|| "
+    f_string << (squares.map { |square| square.to_s }.join(" | "))
+    f_string << " ||"
+  end
 end

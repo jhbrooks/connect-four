@@ -1,7 +1,7 @@
 require "spec_helper"
 
 describe Player do
-  let(:player) { Player.new("a", "\u25C9".encode("utf-8")) }
+  let(:player) { Player.new("a", "X") }
 
   describe "#new" do
     context "when given 2 arguments" do
@@ -31,7 +31,13 @@ describe Player do
 
   describe "#mark" do
     it "returns the correct mark" do
-      expect(player.mark).to eq("\u25C9".encode("utf-8"))
+      expect(player.mark).to eq("X")
+    end
+  end
+
+  describe "#to_s" do
+    it "returns the Player's name as a string" do
+      expect(player.to_s).to eq("a")
     end
   end
 end

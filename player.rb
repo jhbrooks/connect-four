@@ -5,4 +5,8 @@ class Player
     @name = name
     @mark = mark
   end
+
+  def to_s
+  	"#{name}"
+  end
 end

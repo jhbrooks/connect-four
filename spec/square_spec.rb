@@ -74,9 +74,9 @@ describe Square do
       end
     end
 
-    context "when the Square does not have a piece (piece is nil)" do
+    context "when the Square does not have a piece (piece == \" \")" do
       it "returns true" do
-        square.piece = nil
+        square.piece = " "
         expect(square.empty?).to be(true)
       end
     end
@@ -90,6 +90,20 @@ describe Square do
     context "when the second object lacks a piece" do
       it "returns false" do
         expect(square == :a).to be(false)
+      end
+    end
+  end
+
+  describe "#to_s" do
+    context "when called on a non-empty Square" do
+      it "returns the Square's piece as a string" do
+        expect(square.to_s).to eq("a")
+      end
+    end
+
+    context "when called on an empty Square" do
+      it "returns a single space" do
+        expect(empty_square.to_s).to eq(" ")
       end
     end
   end

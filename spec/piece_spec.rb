@@ -40,4 +40,12 @@ describe Piece do
       end
     end
   end
+
+  describe "#to_s" do
+    it "returns the Piece's player's mark as a string" do
+      player = instance_double("Player", mark: "X")
+      piece = Piece.new(player)
+      expect(piece.to_s).to eq("X")
+    end
+  end
 end

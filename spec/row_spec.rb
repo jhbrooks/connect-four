@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe Row do
   let(:empty_row) { Row.create_empty(1, 7) }
-  let(:row) { Row.new(1, [:a]) }
+  let(:row) { Row.new(1, [:a, :b, :c]) }
 
   describe ".create_empty" do
     context "when given 2 arguments" do
@@ -56,7 +56,13 @@ describe Row do
 
   describe "#squares" do
     it "returns the correct collection of squares" do
-      expect(row.squares).to eq([:a])
+      expect(row.squares).to eq([:a, :b, :c])
+    end
+  end
+
+  describe "#to_s" do
+    it "returns a formatted string containing the Row's squares as strings" do
+      expect(empty_row.to_s).to eq("||   |   |   |   |   |   |   ||")
     end
   end
 end
