@@ -1,7 +1,6 @@
 require_relative "../player.rb"
 require_relative "../piece.rb"
 require_relative "../square.rb"
-require_relative "../row.rb"
-require_relative "../column.rb"
+require_relative "../arrangement.rb"
 require_relative "../board.rb"
 require_relative "../state.rb"

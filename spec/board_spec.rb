@@ -88,6 +88,17 @@ describe Board do
     end
   end
 
+  describe "#diags" do
+    it "returns a collection of Arrangements" do
+      expect(board.diags.all? { |col| col.instance_of?(Arrangement) })
+            .to be(true)
+    end
+
+    it "returns a collection of the correct length ((w + h - 1) * 2)" do
+      expect(board.diags.length).to eq(24)
+    end
+  end
+
   describe "#to_s" do
     it "returns a formatted string containing the Board's rows as strings" do
       expect(empty_board.to_s).to eq("-------------------------------\n"\

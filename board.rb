@@ -1,8 +1,8 @@
-require_relative "./row.rb"
-require_relative "./column.rb"
+require_relative "./square.rb"
+require_relative "./arrangement.rb"
 
 class Board
-  attr_reader :width, :height, :squares, :rows, :cols
+  attr_reader :width, :height, :squares, :rows, :cols, :diags
 
   def self.create_empty(width, height)
     squares = []
@@ -23,6 +23,7 @@ class Board
     @squares = squares
     @rows = create_rows
     @cols = create_cols
+    @diags = create_diags
   end
 
   def empty?
@@ -67,5 +68,90 @@ class Board
       cols << (Column.new(h_pos, col_squares))
     end
     cols
+  end
+
+  def create_diags
+    diags = []
+    diags << create_down_diags
+    diags << create_up_diags
+    diags.flatten
+  end
+
+  def create_down_diags
+    down_diags = []
+
+    width.times do |x|
+      h_pos = x + 1
+      v_pos = 1
+      down_diag_squares = []
+
+      while v_pos.between?(1, height) && h_pos.between?(1, width)
+        target_square = squares.find do |square|
+          square.h_pos == h_pos && square.v_pos == v_pos
+        end
+        down_diag_squares << target_square
+        h_pos -= 1
+        v_pos += 1
+      end
+      down_diags << (Arrangement.new(down_diag_squares))
+    end
+
+    height.times do |y|
+      next if y == 0
+      h_pos = width
+      v_pos = y + 1
+      down_diag_squares = []
+
+      while v_pos.between?(1, height) && h_pos.between?(1, width)
+        target_square = squares.find do |square|
+          square.h_pos == h_pos && square.v_pos == v_pos
+        end
+        down_diag_squares << target_square
+        h_pos -= 1
+        v_pos += 1
+      end
+      down_diags << (Arrangement.new(down_diag_squares))
+    end
+
+    down_diags
+  end
+
+  def create_up_diags
+    up_diags = []
+
+    height.times do |y|
+      h_pos = 1
+      v_pos = height - y
+      up_diag_squares = []
+
+      while v_pos.between?(1, height) && h_pos.between?(1, width)
+        target_square = squares.find do |square|
+          square.h_pos == h_pos && square.v_pos == v_pos
+        end
+        up_diag_squares << target_square
+        h_pos += 1
+        v_pos += 1
+      end
+      up_diags << (Arrangement.new(up_diag_squares))
+    end
+
+    width.times do |x|
+      next if x == 0
+      h_pos = x + 1
+      v_pos = 1
+      up_diag_squares = []
+
+      while v_pos.between?(1, height) && h_pos.between?(1, width)
+        target_square = squares.find do |square|
+          square.h_pos == h_pos && square.v_pos == v_pos
+        end
+        up_diag_squares << target_square
+        h_pos += 1
+        v_pos += 1
+      end
+      up_diags << (Arrangement.new(up_diag_squares))
+    end
+
+    up_diags
   end
 end
