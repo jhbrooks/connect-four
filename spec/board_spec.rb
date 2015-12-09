@@ -1,8 +1,10 @@
 require "spec_helper"
 
 describe Board do
-  let(:empty_board) { Board.create_empty(6, 7) }
-  let(:board) { Board.new(6, 7, [:a]) }
+  let(:empty_board) { Board.create_empty(7, 6) }
+  let(:board) do
+   Board.new(7, 6, [Square.new(1, 1, :a), Square.new(2, 2, :b)])
+  end
 
   describe ".create_empty" do
     context "when given 2 arguments" do
@@ -60,115 +62,29 @@ describe Board do
     end
   end
 
-  describe "#rows" do
-    it "returns the correct collection of rows" do
-      expect(board.rows).to eq([:a])
+  describe "#squares" do
+    it "returns the correct collection of squares" do
+      expect(board.squares).to eq([Square.new(1, 1, :a), Square.new(2, 2, :b)])
     end
   end
 
-  describe "#add_piece" do
-    let(:target_square) do
-      empty_row.squares.select do |square|
-        square.horizontal_pos == 2
-      end.first
+  describe "#rows" do
+    it "returns a collection of rows" do
+      expect(board.rows.all? { |row| row.instance_of?(Row) }).to be(true)
     end
 
-    let(:other_squares) do
-      empty_row.squares.select do |square|
-        square.horizontal_pos != 2
-      end
+    it "returns a collection with length equal to the Board's height" do
+      expect(board.rows.length).to eq(6)
+    end
+  end
+
+  describe "#cols" do
+    it "returns a collection of columns" do
+      expect(board.cols.all? { |col| col.instance_of?(Column) }).to be(true)
     end
 
-    context "when the target column is empty" do
-      it "adds a piece to the correct row in that column" do
-        empty_board.add_piece(2, :a)
-        target_row = empty_board.rows.select do |row|
-          row.vertical_pos == 1
-        end.first
-        expect(target_row.empty?).to be(false)
-      end
-
-      it "doesn't add a piece to any row above that row" do
-        empty_board.add_piece(2, :a)
-        rows_above = empty_board.rows.select do |row|
-          row.vertical_pos > 1
-        end
-        expect(rows_above.all? { |row| row.empty? }).to be(true)
-      end
-
-      it "returns true" do
-        expect(empty_board.add_piece(2, :a)).to be(true)
-      end
-    end
-
-    context "when the target column is partially full" do
-      before (:each) do
-        empty_board.add_piece(2, :a)
-      end
-
-      it "adds a piece to the correct row in that column" do
-        empty_board.add_piece(2, :b)
-        target_row = empty_board.rows.select do |row|
-          row.vertical_pos == 2
-        end.first
-        expect(target_row.empty?).to be(false)
-      end
-
-      it "doesn't add a piece to any row above that row" do
-        empty_board.add_piece(2, :b)
-        rows_above = empty_board.rows.select do |row|
-          row.vertical_pos > 2
-        end
-        expect(rows_above.all? { |row| row.empty? }).to be(true)
-      end
-
-      it "doesn't change a piece in any row below that row" do
-        empty_board.add_piece(2, :b)
-        rows_below = empty_board.rows.select do |row|
-          row.vertical_pos < 2
-        end
-        rows_below_squares = rows_below.map do |row|
-          row.squares
-        end
-        squares_below = rows_below_squares.map do |squares|
-          squares.select do |square|
-            square.horizontal_pos == 2
-          end.first
-        end
-        expect(squares_below.all? { |square| square.piece == :a }).to be(true)
-      end
-
-      it "returns true" do
-        expect(empty_board.add_piece(2, :b)).to be(true)
-      end
-    end
-
-    context "when the target column is full" do
-      before (:each) do
-        empty_board.height.times do
-          empty_board.add_piece(2, :a)
-        end
-      end
-
-      it "doesn't change a piece in any row" do
-        empty_board.add_piece(2, :b)
-        rows_below = empty_board.rows.select do |row|
-          row.vertical_pos < empty_board.height + 1
-        end
-        rows_below_squares = rows_below.map do |row|
-          row.squares
-        end
-        squares_below = rows_below_squares.map do |squares|
-          squares.select do |square|
-            square.horizontal_pos == 2
-          end.first
-        end
-        expect(squares_below.all? { |square| square.piece == :a }).to be(true)
-      end
-
-      it "returns false" do
-        expect(empty_board.add_piece(2, :b)).to be(false)
-      end
+    it "returns a collection with length equal to the Board's width" do
+      expect(board.cols.length).to eq(7)
     end
   end
 

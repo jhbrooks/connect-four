@@ -44,7 +44,7 @@ describe State do
 
   describe "#to_s" do
     it "returns a formatted string representing the game state" do
-      state = State.new(Player.new("I", "X"), Board.create_empty(6, 7))
+      state = State.new(Player.new("I", "X"), Board.create_empty(7, 6))
       expect(state.to_s).to eq("It is I's turn to play.\n\n"\
                                "-------------------------------\n"\
                                "||   |   |   |   |   |   |   ||\n"\

@@ -1,11 +1,11 @@
 require "spec_helper.rb"
 
 describe Square do
-  let(:empty_square) { Square.create_empty(1) }
-  let(:square) { Square.new(1, :a) }
+  let(:empty_square) { Square.create_empty(1, 2) }
+  let(:square) { Square.new(1, 2, :a) }
 
   describe ".create_empty" do
-    context "when given 1 argument" do
+    context "when given 2 arguments" do
       it "returns a Square object" do
         expect(empty_square).to be_an_instance_of(Square)
       end
@@ -15,42 +15,49 @@ describe Square do
       end
     end
 
-    context "when given fewer than 1 argument" do
+    context "when given fewer than 2 arguments" do
       it "raises an ArgumentError" do
         expect { Square.create_empty }.to raise_error(ArgumentError)
       end
     end
 
-    context "when given more than 1 argument" do
+    context "when given more than 2 argument" do
       it "raises an ArgumentError" do
-        expect { Square.create_empty(:a, :b) }.to raise_error(ArgumentError)
+        expect { Square.create_empty(:a, :b, :c) }
+               .to raise_error(ArgumentError)
       end
     end
   end
 
   describe "#new" do
-    context "when given 2 arguments" do
+    context "when given 3 arguments" do
       it "returns a Square object" do
         expect(square).to be_an_instance_of(Square)
       end
     end
 
-    context "when given fewer than 2 arguments" do
+    context "when given fewer than 3 arguments" do
       it "raises an ArgumentError" do
         expect { Square.new }.to raise_error(ArgumentError)
       end
     end
 
-    context "when given more than 2 arguments" do
+    context "when given more than 3 arguments" do
       it "raises an ArgumentError" do
-        expect { Square.new(:a, :b, :c) }.to raise_error(ArgumentError)
+        expect { Square.new(:a, :b, :c, :d) }.to raise_error(ArgumentError)
       end
     end
   end
 
-  describe "#horizontal_pos" do
+  describe "#h_pos" do
     it "returns the correct horizontal position" do
-      expect(square.horizontal_pos).to eq(1)
+      expect(square.h_pos).to eq(1)
+    end
+  end
+
+  describe "#v_pos" do
+    it "returns the correct vertical position" do
+      expect(square.v_pos).to eq(2)
     end
   end
 
@@ -84,7 +91,7 @@ describe Square do
 
   describe "#==" do
     it "compares using each object's piece" do
-      expect(square).to eq(Square.new(2, :a))
+      expect(square).to eq(Square.new(2, 3, :a))
     end
 
     context "when the second object lacks a piece" do

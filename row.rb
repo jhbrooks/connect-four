@@ -1,36 +1,24 @@
 require_relative "./square.rb"
 
 class Row
-  attr_reader :vertical_pos, :squares
+  attr_reader :v_pos, :squares
 
-  def self.create_empty(vertical_pos, width)
+  def self.create_empty(v_pos, width)
     squares = []
     width.times do |i|
-      squares << (Square.create_empty(i + 1))
+      squares << (Square.create_empty(i + 1, v_pos))
     end
 
-    self.new(vertical_pos, squares)
+    self.new(v_pos, squares)
   end
 
-  def initialize(vertical_pos, squares)
-    @vertical_pos = vertical_pos
+  def initialize(v_pos, squares)
+    @v_pos = v_pos
     @squares = squares
   end
 
   def empty?
     squares.all? { |square| square.empty? }
-  end
-
-  def add_piece(horizontal_pos, piece)
-    target_square = squares.select do |square|
-      square.horizontal_pos == horizontal_pos
-    end.first
-    if target_square.empty?
-      target_square.piece = piece
-      true
-    else
-      false
-    end
   end
 
   def to_s

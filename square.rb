@@ -1,13 +1,14 @@
 class Square
-  attr_reader :horizontal_pos
+  attr_reader :h_pos, :v_pos
   attr_accessor :piece
 
-  def self.create_empty(horizontal_pos)
-    self.new(horizontal_pos, " ")
+  def self.create_empty(h_pos, v_pos)
+    self.new(h_pos, v_pos, " ")
   end
 
-  def initialize(horizontal_pos, piece)
-    @horizontal_pos = horizontal_pos
+  def initialize(h_pos, v_pos, piece)
+    @h_pos = h_pos
+    @v_pos = v_pos
     @piece = piece
   end
 
