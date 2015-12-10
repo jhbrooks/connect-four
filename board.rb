@@ -50,7 +50,7 @@ class Board
     f_string = "#{dash_string}\n"
     f_string << (rows.reverse.map { |row| row.to_s }
                                   .join("\n#{dash_string}\n"))
-    f_string << "\n#{dash_string}"
+    f_string << "\n#{dash_string}\n\n"
   end
 
   private
@@ -165,16 +165,20 @@ class Board
   end
 
   def row_win?(square)
-    rows.find { |row| row.squares.include?(square) }.win?
+    rows.find do |row|
+      row.squares.map { |s| s.object_id }.include?(square.object_id)
+    end.win?
   end
 
   def col_win?(square)
-    cols.find { |col| col.squares.include?(square) }.win?
+    cols.find do |col|
+      col.squares.map { |s| s.object_id }.include?(square.object_id)
+    end.win?
   end
 
   def diag_win?(square)
-    diags.select { |diag| diag.squares.include?(square) }.any? do |diag|
-      diag.win?
-    end
+    diags.select do |diag|
+      diag.squares.map { |s| s.object_id }.include?(square.object_id)
+    end.any? { |diag| diag.win? }
   end
 end

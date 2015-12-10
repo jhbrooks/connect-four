@@ -110,8 +110,8 @@ describe Arrangement do
         expect(squares_above.all? { |square| square.empty? }).to be(true)
       end
 
-      it "returns true" do
-        expect(empty_arrangement.add_piece(:a)).to be(true)
+      it "returns the square where the piece was added" do
+        expect(empty_arrangement.add_piece(:a)).to be(target_square)
       end
     end
 
@@ -147,8 +147,8 @@ describe Arrangement do
         expect(squares_below.all? { |square| square.piece == :a }).to be(true)
       end
 
-      it "returns true" do
-        expect(empty_arrangement.add_piece(:b)).to be(true)
+      it "returns the square where the piece was added" do
+        expect(empty_arrangement.add_piece(:b)).to be(target_square)
       end
     end
 

@@ -38,7 +38,7 @@ class Arrangement
   def add_piece(piece)
     if target = squares.find { |square| square.empty? }
       target.piece = piece
-      true
+      target
     else
       false
     end

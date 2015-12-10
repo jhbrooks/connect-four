@@ -105,7 +105,8 @@ describe Board do
         2.upto(5) do |h_pos|
           empty_board.add_piece(h_pos, :a)
         end
-        expect(empty_board.win?(Square.new(5, 1, :a))).to be(true)
+        target_square = empty_board.squares[6]
+        expect(empty_board.win?(target_square)).to be(true)
       end
     end
 
@@ -114,7 +115,8 @@ describe Board do
         4.times do
           empty_board.add_piece(2, :a)
         end
-        expect(empty_board.win?(Square.new(2, 4, :a))).to be(true)
+        target_square = empty_board.squares[-9]
+        expect(empty_board.win?(target_square)).to be(true)
       end
     end
 
@@ -128,7 +130,8 @@ describe Board do
             empty_board.add_piece(4, :b)
           end
           empty_board.add_piece(4, :a)
-          expect(empty_board.win?(Square.new(4, 4, :a))).to be(true)
+          target_square = empty_board.squares[-21]
+          expect(empty_board.win?(target_square)).to be(true)
         end
       end
 
@@ -141,14 +144,16 @@ describe Board do
             empty_board.add_piece(4, :b)
           end
           empty_board.add_piece(4, :a)
-          expect(empty_board.win?(Square.new(4, 4, :a))).to be(true)
+          target_square = empty_board.squares[-21]
+          expect(empty_board.win?(target_square)).to be(true)
         end
       end
     end
 
     context "with no win present" do
       it "returns false" do
-        expect(empty_board.win?(Square.new(1, 1, " "))).to be(false)
+        target_square = empty_board.squares[1]
+        expect(empty_board.win?(target_square)).to be(false)
       end
     end
   end
@@ -195,7 +200,7 @@ describe Board do
                                        "||   |   |   |   |   |   |   ||\n"\
                                        "-------------------------------\n"\
                                        "||   |   |   |   |   |   |   ||\n"\
-                                       "-------------------------------")
+                                       "-------------------------------\n\n")
       end
     end
 
@@ -216,7 +221,7 @@ describe Board do
                                        "|| a |   |   |   |   |   |   ||\n"\
                                        "-------------------------------\n"\
                                        "|| a | a |   |   |   |   |   ||\n"\
-                                       "-------------------------------")
+                                       "-------------------------------\n\n")
       end
     end
   end
