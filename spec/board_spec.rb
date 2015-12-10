@@ -99,21 +99,125 @@ describe Board do
     end
   end
 
+  describe "#win?" do
+    context "with a row win present" do
+      it "returns true" do
+        2.upto(5) do |h_pos|
+          empty_board.add_piece(h_pos, :a)
+        end
+        expect(empty_board.win?(Square.new(5, 1, :a))).to be(true)
+      end
+    end
+
+    context "with a column win present" do
+      it "returns true" do
+        4.times do
+          empty_board.add_piece(2, :a)
+        end
+        expect(empty_board.win?(Square.new(2, 4, :a))).to be(true)
+      end
+    end
+
+    context "with a diagonal win present" do
+      context "when that diagonal points down" do
+        it "returns true" do
+          3.times do |i|
+            5.upto(7 - i) do |h_pos|
+              empty_board.add_piece(h_pos, :a)
+            end
+            empty_board.add_piece(4, :b)
+          end
+          empty_board.add_piece(4, :a)
+          expect(empty_board.win?(Square.new(4, 4, :a))).to be(true)
+        end
+      end
+
+      context "when that diagonal points up" do
+        it "returns true" do
+          3.times do |i|
+            (i + 1).upto(3) do |h_pos|
+              empty_board.add_piece(h_pos, :a)
+            end
+            empty_board.add_piece(4, :b)
+          end
+          empty_board.add_piece(4, :a)
+          expect(empty_board.win?(Square.new(4, 4, :a))).to be(true)
+        end
+      end
+    end
+
+    context "with no win present" do
+      it "returns false" do
+        expect(empty_board.win?(Square.new(1, 1, " "))).to be(false)
+      end
+    end
+  end
+
+  describe "#full?" do
+    context "when the Board is empty" do
+      it "returns false" do
+        expect(empty_board.full?).to be(false)
+      end
+    end
+
+    context "when the Board is partially full" do
+      it "returns false" do
+        empty_board.add_piece(2, :a)
+        expect(empty_board.full?).to be(false)
+      end
+    end
+
+    context "when the Board is full" do
+      it "returns true" do
+        empty_board.width.times do |x|
+          empty_board.height.times do
+            h_pos = x + 1
+            empty_board.add_piece(h_pos, :a)
+          end
+        end
+        expect(empty_board.full?).to be(true)
+      end
+    end
+  end
+
   describe "#to_s" do
-    it "returns a formatted string containing the Board's rows as strings" do
-      expect(empty_board.to_s).to eq("-------------------------------\n"\
-                                     "||   |   |   |   |   |   |   ||\n"\
-                                     "-------------------------------\n"\
-                                     "||   |   |   |   |   |   |   ||\n"\
-                                     "-------------------------------\n"\
-                                     "||   |   |   |   |   |   |   ||\n"\
-                                     "-------------------------------\n"\
-                                     "||   |   |   |   |   |   |   ||\n"\
-                                     "-------------------------------\n"\
-                                     "||   |   |   |   |   |   |   ||\n"\
-                                     "-------------------------------\n"\
-                                     "||   |   |   |   |   |   |   ||\n"\
-                                     "-------------------------------")
+    context "when the Board is empty" do
+      it "returns a formatted string representing the Board" do
+        expect(empty_board.to_s).to eq("-------------------------------\n"\
+                                       "||   |   |   |   |   |   |   ||\n"\
+                                       "-------------------------------\n"\
+                                       "||   |   |   |   |   |   |   ||\n"\
+                                       "-------------------------------\n"\
+                                       "||   |   |   |   |   |   |   ||\n"\
+                                       "-------------------------------\n"\
+                                       "||   |   |   |   |   |   |   ||\n"\
+                                       "-------------------------------\n"\
+                                       "||   |   |   |   |   |   |   ||\n"\
+                                       "-------------------------------\n"\
+                                       "||   |   |   |   |   |   |   ||\n"\
+                                       "-------------------------------")
+      end
+    end
+
+    context "when the Board is not empty" do
+      it "returns a formatted string representing the Board" do
+        empty_board.add_piece(1, :a)
+        empty_board.add_piece(1, :a)
+        empty_board.add_piece(2, :a)
+        expect(empty_board.to_s).to eq("-------------------------------\n"\
+                                       "||   |   |   |   |   |   |   ||\n"\
+                                       "-------------------------------\n"\
+                                       "||   |   |   |   |   |   |   ||\n"\
+                                       "-------------------------------\n"\
+                                       "||   |   |   |   |   |   |   ||\n"\
+                                       "-------------------------------\n"\
+                                       "||   |   |   |   |   |   |   ||\n"\
+                                       "-------------------------------\n"\
+                                       "|| a |   |   |   |   |   |   ||\n"\
+                                       "-------------------------------\n"\
+                                       "|| a | a |   |   |   |   |   ||\n"\
+                                       "-------------------------------")
+      end
     end
   end
 end

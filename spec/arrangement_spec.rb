@@ -55,6 +55,41 @@ describe Arrangement do
     end
   end
 
+  describe "#win?" do
+    context "with 4 or more adjacent non-empty squares" do
+      context "when those squares are equal" do
+        it "returns true" do
+          empty_arrangement.add_piece(:b)
+          4.times do
+            empty_arrangement.add_piece(:a)
+          end
+          expect(empty_arrangement.win?).to be(true)
+        end
+      end
+
+      context "when those squares are not equal" do
+        it "returns false" do
+          2.times do
+            empty_arrangement.add_piece(:b)
+          end
+          3.times do
+            empty_arrangement.add_piece(:a)
+          end
+          expect(empty_arrangement.win?).to be(false)
+        end
+      end
+    end
+
+    context "with fewer than 4 adjacent non-empty squares" do
+      it "returns false" do
+        3.times do
+          empty_arrangement.add_piece(:a)
+        end
+        expect(empty_arrangement.win?).to be(false)
+      end
+    end
+  end
+
   describe "#add_piece" do
     context "when the Arrangement is empty" do
       let(:target_square) do

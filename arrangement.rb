@@ -20,6 +20,21 @@ class Arrangement
     squares.all? { |square| square.empty? }
   end
 
+  def win?
+    non_empty_adjacent_equals = []
+    squares.each do |square|
+      if square.empty?
+        non_empty_adjacent_equals = []
+      elsif square != non_empty_adjacent_equals.last
+        non_empty_adjacent_equals = [square]
+      else
+        non_empty_adjacent_equals << square
+        return true if non_empty_adjacent_equals.length == 4
+      end
+    end
+    false
+  end
+
   def add_piece(piece)
     if target = squares.find { |square| square.empty? }
       target.piece = piece
@@ -49,7 +64,7 @@ class Row < Arrangement
 
   def to_s
     f_string = "|| "
-    f_string << (squares.map { |square| square.to_s }.join(" | "))
+    f_string << (squares.map { |square| square.to_s }.join(" | ").reverse)
     f_string << " ||"
   end
 end

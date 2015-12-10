@@ -8,7 +8,7 @@ class Board
     squares = []
     width.times do |x|
       height.times do |y|
-        h_pos = x + 1
+        h_pos = width - x
         v_pos = y + 1
         squares << (Square.create_empty(h_pos, v_pos))
       end
@@ -30,6 +30,14 @@ class Board
     rows.all? { |row| row.empty? }
   end
 
+  def win?(square)
+    row_win?(square) || col_win?(square) || diag_win?(square)
+  end
+
+  def full?
+    squares.none? { |square| square.empty? }
+  end
+
   def add_piece(h_pos, piece)
     target_col = cols.select do |col|
       col.h_pos == h_pos
@@ -40,7 +48,8 @@ class Board
   def to_s
     dash_string = "#{'--' * 2}#{'---' * width}#{'-' * (width - 1)}"
     f_string = "#{dash_string}\n"
-    f_string << (rows.map { |row| row.to_s }.join("\n#{dash_string}\n"))
+    f_string << (rows.reverse.map { |row| row.to_s }
+                                  .join("\n#{dash_string}\n"))
     f_string << "\n#{dash_string}"
   end
 
@@ -153,5 +162,19 @@ class Board
     end
 
     up_diags
+  end
+
+  def row_win?(square)
+    rows.find { |row| row.squares.include?(square) }.win?
+  end
+
+  def col_win?(square)
+    cols.find { |col| col.squares.include?(square) }.win?
+  end
+
+  def diag_win?(square)
+    diags.select { |diag| diag.squares.include?(square) }.any? do |diag|
+      diag.win?
+    end
   end
 end
