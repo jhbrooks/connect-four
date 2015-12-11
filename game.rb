@@ -18,11 +18,17 @@ class Game
 
   def play
     game_over = false
-    until game_over == true
+    until game_over
       puts state
-      puts "Please enter a move."
-      move = gets.chomp!.to_i
-      state.add_piece(move)
+      move_valid = false
+      until move_valid
+        puts "Please enter a move."
+        move = gets.chomp!.to_i
+        move_valid = state.add_piece(move)
+        unless move_valid
+          puts "Invalid move! Please try again.\n\n"
+        end
+      end
       if state.win?
         game_over = true
         puts state

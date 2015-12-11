@@ -39,10 +39,11 @@ class Board
   end
 
   def add_piece(h_pos, piece)
-    target_col = cols.select do |col|
-      col.h_pos == h_pos
-    end.first
-    target_col.add_piece(piece)
+    if target_col = cols.find { |col| col.h_pos == h_pos }
+      target_col.add_piece(piece)
+    else
+      false
+    end
   end
 
   def to_s

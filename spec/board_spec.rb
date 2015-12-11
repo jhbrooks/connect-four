@@ -185,6 +185,14 @@ describe Board do
     end
   end
 
+  describe "#add_piece" do
+    context "when given an invalid horizontal position" do
+      it "returns false" do
+        expect(empty_board.add_piece(0, :a)).to be(false)
+      end
+    end
+  end
+
   describe "#to_s" do
     context "when the Board is empty" do
       it "returns a formatted string representing the Board" do

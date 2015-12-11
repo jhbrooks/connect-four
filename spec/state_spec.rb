@@ -129,14 +129,33 @@ describe State do
       end
     end
 
-    context "when unsuccessful" do
-      it "leaves the last square unchanged" do
+    context "when targetted at a full column" do
+      before (:each) do
         empty_state.board.height.times do
           empty_state.add_piece(1)
         end
+      end
+
+      it "leaves the last square unchanged" do
         empty_state.add_piece(1)
         expect(empty_state.last_square)
               .to eq(Square.new(1, 6, Piece.new(empty_state.current_player)))
+      end
+
+      it "returns false" do
+        expect(empty_state.add_piece(1)).to be(false)
+      end
+    end
+
+    context "when targetted off the board" do
+      it "leaves the last square unchanged" do
+        empty_state.add_piece(0)
+        expect(empty_state.last_square)
+              .to be(nil)
+      end
+
+      it "returns false" do
+        expect(empty_state.add_piece(0)).to be(false)
       end
     end
   end
