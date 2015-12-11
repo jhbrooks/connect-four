@@ -1,13 +1,13 @@
 require "spec_helper"
 
 describe Board do
-  let(:empty_board) { Board.create_empty(7, 6) }
+  let(:empty_board) { Board.create_empty(7, 6, 33) }
   let(:board) do
-   Board.new(7, 6, [Square.new(1, 1, :a), Square.new(2, 2, :b)])
+   Board.new(7, 6, [Square.new(1, 1, :a), Square.new(2, 2, :b)], 0)
   end
 
   describe ".create_empty" do
-    context "when given 2 arguments" do
+    context "when given 3 arguments" do
       it "returns a Board object" do
         expect(empty_board).to be_an_instance_of(Board)
       end
@@ -17,35 +17,36 @@ describe Board do
       end
     end
 
-    context "when given fewer than 2 arguments" do
+    context "when given fewer than 3 arguments" do
       it "raises an ArgumentError" do
         expect { Board.create_empty }.to raise_error(ArgumentError)
       end
     end
 
-    context "when given more than 2 arguments" do
+    context "when given more than 3 arguments" do
       it "raises an ArgumentError" do
-        expect { Board.create_empty(:a, :b, :c) }.to raise_error(ArgumentError)
+        expect { Board.create_empty(:a, :b, :c, :d) }
+               .to raise_error(ArgumentError)
       end
     end
   end
 
   describe "#new" do
-    context "when given 3 arguments" do
+    context "when given 4 arguments" do
       it "returns a Board object" do
         expect(board).to be_an_instance_of(Board)
       end
     end
 
-    context "when given fewer than 3 arguments" do
+    context "when given fewer than 4 arguments" do
       it "raises an ArgumentError" do
         expect { Board.new }.to raise_error(ArgumentError)
       end
     end
 
-    context "when given more than 3 arguments" do
+    context "when given more than 4 arguments" do
       it "raises an ArgumentError" do
-        expect { Board.new(:a, :b, :c, :d) }.to raise_error(ArgumentError)
+        expect { Board.new(:a, :b, :c, :d, :e) }.to raise_error(ArgumentError)
       end
     end
   end
@@ -65,6 +66,12 @@ describe Board do
   describe "#squares" do
     it "returns the correct collection of squares" do
       expect(board.squares).to eq([Square.new(1, 1, :a), Square.new(2, 2, :b)])
+    end
+  end
+
+  describe "#line_width" do
+    it "returns the correct line width" do
+      expect(board.line_width).to eq(0)
     end
   end
 
@@ -196,19 +203,20 @@ describe Board do
   describe "#to_s" do
     context "when the Board is empty" do
       it "returns a formatted string representing the Board" do
-        expect(empty_board.to_s).to eq("-------------------------------\n"\
-                                       "||   |   |   |   |   |   |   ||\n"\
-                                       "-------------------------------\n"\
-                                       "||   |   |   |   |   |   |   ||\n"\
-                                       "-------------------------------\n"\
-                                       "||   |   |   |   |   |   |   ||\n"\
-                                       "-------------------------------\n"\
-                                       "||   |   |   |   |   |   |   ||\n"\
-                                       "-------------------------------\n"\
-                                       "||   |   |   |   |   |   |   ||\n"\
-                                       "-------------------------------\n"\
-                                       "||   |   |   |   |   |   |   ||\n"\
-                                       "-------------------------------\n\n")
+        expect(empty_board.to_s).to eq("   [1] [2] [3] [4] [5] [6] [7]   \n"\
+                                       " ------------------------------- \n"\
+                                       " ||   |   |   |   |   |   |   || \n"\
+                                       " ------------------------------- \n"\
+                                       " ||   |   |   |   |   |   |   || \n"\
+                                       " ------------------------------- \n"\
+                                       " ||   |   |   |   |   |   |   || \n"\
+                                       " ------------------------------- \n"\
+                                       " ||   |   |   |   |   |   |   || \n"\
+                                       " ------------------------------- \n"\
+                                       " ||   |   |   |   |   |   |   || \n"\
+                                       " ------------------------------- \n"\
+                                       " ||   |   |   |   |   |   |   || \n"\
+                                       " ------------------------------- \n\n")
       end
     end
 
@@ -217,19 +225,20 @@ describe Board do
         empty_board.add_piece(1, :a)
         empty_board.add_piece(1, :a)
         empty_board.add_piece(2, :a)
-        expect(empty_board.to_s).to eq("-------------------------------\n"\
-                                       "||   |   |   |   |   |   |   ||\n"\
-                                       "-------------------------------\n"\
-                                       "||   |   |   |   |   |   |   ||\n"\
-                                       "-------------------------------\n"\
-                                       "||   |   |   |   |   |   |   ||\n"\
-                                       "-------------------------------\n"\
-                                       "||   |   |   |   |   |   |   ||\n"\
-                                       "-------------------------------\n"\
-                                       "|| a |   |   |   |   |   |   ||\n"\
-                                       "-------------------------------\n"\
-                                       "|| a | a |   |   |   |   |   ||\n"\
-                                       "-------------------------------\n\n")
+        expect(empty_board.to_s).to eq("   [1] [2] [3] [4] [5] [6] [7]   \n"\
+                                       " ------------------------------- \n"\
+                                       " ||   |   |   |   |   |   |   || \n"\
+                                       " ------------------------------- \n"\
+                                       " ||   |   |   |   |   |   |   || \n"\
+                                       " ------------------------------- \n"\
+                                       " ||   |   |   |   |   |   |   || \n"\
+                                       " ------------------------------- \n"\
+                                       " ||   |   |   |   |   |   |   || \n"\
+                                       " ------------------------------- \n"\
+                                       " || a |   |   |   |   |   |   || \n"\
+                                       " ------------------------------- \n"\
+                                       " || a | a |   |   |   |   |   || \n"\
+                                       " ------------------------------- \n\n")
       end
     end
   end

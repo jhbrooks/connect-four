@@ -2,9 +2,9 @@ require_relative "./square.rb"
 require_relative "./arrangement.rb"
 
 class Board
-  attr_reader :width, :height, :squares, :rows, :cols, :diags
+  attr_reader :width, :height, :squares, :line_width, :rows, :cols, :diags
 
-  def self.create_empty(width, height)
+  def self.create_empty(width, height, line_width)
     squares = []
     width.times do |x|
       height.times do |y|
@@ -14,13 +14,14 @@ class Board
       end
     end
 
-    self.new(width, height, squares)
+    self.new(width, height, squares, line_width)
   end
 
-  def initialize(width, height, squares)
+  def initialize(width, height, squares, line_width)
     @width = width
     @height = height
     @squares = squares
+    @line_width = line_width
     @rows = create_rows
     @cols = create_cols
     @diags = create_diags
@@ -48,7 +49,9 @@ class Board
 
   def to_s
     dash_string = "#{'--' * 2}#{'---' * width}#{'-' * (width - 1)}"
-    f_string = "#{dash_string}\n"
+                  .center(line_width)
+    f_string = label_string.center(line_width)
+    f_string << "\n#{dash_string}\n"
     f_string << (rows.reverse.map { |row| row.to_s }
                                   .join("\n#{dash_string}\n"))
     f_string << "\n#{dash_string}\n\n"
@@ -63,7 +66,7 @@ class Board
       row_squares = squares.select do |square|
         square.v_pos == v_pos
       end
-      rows << (Row.new(v_pos, row_squares))
+      rows << (Row.new(v_pos, row_squares, line_width))
     end
     rows
   end
@@ -181,5 +184,14 @@ class Board
     diags.select do |diag|
       diag.squares.map { |s| s.object_id }.include?(square.object_id)
     end.any? { |diag| diag.win? }
+  end
+
+  def label_string
+    label_nums = []
+    width.times do |x|
+      h_pos = x + 1
+      label_nums << h_pos
+    end
+    label_nums.map { |n| "[#{n}]" }.join(" ")
   end
 end

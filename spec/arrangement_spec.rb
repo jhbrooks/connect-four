@@ -173,11 +173,11 @@ describe Arrangement do
 end
 
 describe Row do
-  let(:empty_row) { Row.create_empty(1, 7) }
-  let(:row) { Row.new(1, [:a, :b, :c]) }
+  let(:empty_row) { Row.create_empty(1, 7, 33) }
+  let(:row) { Row.new(1, [:a, :b, :c], 0) }
 
   describe ".create_empty" do
-    context "when given 2 arguments" do
+    context "when given 3 arguments" do
       it "returns a Row object" do
         expect(empty_row).to be_an_instance_of(Row)
       end
@@ -187,35 +187,36 @@ describe Row do
       end
     end
 
-    context "when given fewer than 2 arguments" do
+    context "when given fewer than 3 arguments" do
       it "raises an ArgumentError" do
         expect { Row.create_empty }.to raise_error(ArgumentError)
       end
     end
 
-    context "when given more than 2 arguments" do
+    context "when given more than 3 arguments" do
       it "raises an ArgumentError" do
-        expect { Row.create_empty(:a, :b, :c) }.to raise_error(ArgumentError)
+        expect { Row.create_empty(:a, :b, :c, :d) }
+               .to raise_error(ArgumentError)
       end
     end
   end
 
   describe "#new" do
-    context "when given 2 arguments" do
+    context "when given 3 arguments" do
       it "returns a Row object" do
         expect(row).to be_an_instance_of(Row)
       end
     end
 
-    context "when given fewer than 2 arguments" do
+    context "when given fewer than 3 arguments" do
       it "raises an ArgumentError" do
         expect { Row.new }.to raise_error(ArgumentError)
       end
     end
 
-    context "when given more than 2 arguments" do
+    context "when given more than 3 arguments" do
       it "raises an ArgumentError" do
-        expect { Row.new(:a, :b, :c) }.to raise_error(ArgumentError)
+        expect { Row.new(:a, :b, :c, :d) }.to raise_error(ArgumentError)
       end
     end
   end
@@ -226,9 +227,15 @@ describe Row do
     end
   end
 
+  describe "#line_width" do
+    it "returns the correct line width" do
+      expect(row.line_width).to eq(0)
+    end
+  end
+
   describe "#to_s" do
     it "returns a formatted string containing the Row's squares as strings" do
-      expect(empty_row.to_s).to eq("||   |   |   |   |   |   |   ||")
+      expect(empty_row.to_s).to eq(" ||   |   |   |   |   |   |   || ")
     end
   end
 end

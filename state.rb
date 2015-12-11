@@ -1,14 +1,16 @@
 require_relative "./piece.rb"
 
 class State
-  attr_reader :players, :board
+  attr_reader :players, :board, :line_width
   attr_accessor :current_player, :last_square
 
-  def initialize(current_player, players, last_square, board)
+  def initialize(current_player, players, board, last_square, line_width)
     @current_player = current_player
     @players = players
-    @last_square = last_square
     @board = board
+    @last_square = last_square
+    self.last_square ||= board.squares.first
+    @line_width = line_width
   end
 
   def win?
@@ -36,7 +38,19 @@ class State
   end
 
   def to_s
-    f_string = "\nIt is #{current_player}'s turn to play.\n\n"
+    f_string = "\n#{status_string.center(line_width)}\n\n"
     f_string << (board.to_s)
+  end
+
+  private
+
+  def status_string
+    if win?
+      "#{current_player} has won!"
+    elsif tie?
+      "It's a tie!"
+    else
+      "It is #{current_player}'s turn to play."
+    end
   end
 end

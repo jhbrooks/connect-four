@@ -46,26 +46,28 @@ class Arrangement
 end
 
 class Row < Arrangement
-  attr_reader :v_pos
+  attr_reader :v_pos, :line_width
 
-  def self.create_empty(v_pos, width)
+  def self.create_empty(v_pos, width, line_width)
     squares = []
     width.times do |i|
       squares << (Square.create_empty(i + 1, v_pos))
     end
 
-    self.new(v_pos, squares)
+    self.new(v_pos, squares, line_width)
   end
 
-  def initialize(v_pos, squares)
+  def initialize(v_pos, squares, line_width)
     @v_pos = v_pos
     @squares = squares
+    @line_width = line_width
   end
 
   def to_s
     f_string = "|| "
     f_string << (squares.map { |square| square.to_s }.join(" | ").reverse)
     f_string << " ||"
+    f_string.center(line_width)
   end
 end
 

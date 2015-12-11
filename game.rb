@@ -9,7 +9,7 @@ class Game
     p1 = Player.new("P1", "X")
     p2 = Player.new("P2", "O")
 
-    self.new(State.new(p1, [p1, p2], nil, Board.create_empty(7, 6)))
+    self.new(State.new(p1, [p1, p2], Board.create_empty(7, 6, 80), nil, 80))
   end
 
   def initialize(state)
