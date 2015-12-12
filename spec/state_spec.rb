@@ -4,13 +4,15 @@ describe State do
   let(:empty_state) do
     p1 = Player.new("P1", "X")
     p2 = Player.new("P2", "O")
+
     State.new(p1, [p1, p2], Board.create_empty(7, 6, 33), nil, 33)
   end
 
   let(:state) { State.new(:p1, [:p1, :p2], :b, :c, 0) }
 
   describe "#new" do
-    context "when given 5 arguments" do
+    context "when given 5 args (current_player, players, "\
+                               "board, last_square, line_width)" do
       it "returns a State object" do
         expect(state).to be_an_instance_of(State)
       end
@@ -28,16 +30,22 @@ describe State do
           .to raise_error(ArgumentError)
       end
     end
+
+    context "when given nil for a last_square" do
+      it "sets last_square equal to the first of board's squares" do
+        expect(empty_state.last_square).to be(empty_state.board.squares.first)
+      end
+    end
   end
 
   describe "#current_player" do
-    it "returns the correct player" do
+    it "returns the correct current player" do
       expect(state.current_player).to eq(:p1)
     end
   end
 
   describe "#current_player=" do
-    it "correctly sets a new player" do
+    it "correctly sets a new current player" do
       state.current_player = :p2
       expect(state.current_player).to eq(:p2)
     end
@@ -77,8 +85,7 @@ describe State do
   describe "#tie?" do
     context "when the board is not full" do
       it "returns false" do
-        empty_state.board.add_piece(1, :a)
-        empty_state.last_square = empty_state.board.squares[-6]
+        empty_state.add_piece(1)
         expect(empty_state.tie?).to be(false)
       end
     end
@@ -89,10 +96,9 @@ describe State do
           empty_state.board.width.times do |x|
             empty_state.board.height.times do
               h_pos = x + 1
-              empty_state.board.add_piece(h_pos, :a)
+              empty_state.add_piece(h_pos)
             end
           end
-          empty_state.last_square = empty_state.board.squares[5]
           expect(empty_state.tie?).to be(false)
         end
       end
@@ -114,7 +120,7 @@ describe State do
 
   describe "#next_player" do
     context "when the current player is not the last player in players" do
-      it "returns the next player in players" do
+      it "returns the last player in players" do
         expect(state.next_player).to eq(:p2)
       end
     end
@@ -194,25 +200,24 @@ describe State do
         empty_state.board.width.times do |x|
           empty_state.board.height.times do
             h_pos = x + 1
-            empty_state.board.add_piece(h_pos, :a)
+            empty_state.add_piece(h_pos)
           end
         end
-        empty_state.last_square = empty_state.board.squares[5]
         expect(empty_state.to_s)
           .to eq("\n           P1 has won!           \n\n"\
                  "   [1] [2] [3] [4] [5] [6] [7]   \n"\
                  " ------------------------------- \n"\
-                 " || a | a | a | a | a | a | a || \n"\
+                 " || X | X | X | X | X | X | X || \n"\
                  " ------------------------------- \n"\
-                 " || a | a | a | a | a | a | a || \n"\
+                 " || X | X | X | X | X | X | X || \n"\
                  " ------------------------------- \n"\
-                 " || a | a | a | a | a | a | a || \n"\
+                 " || X | X | X | X | X | X | X || \n"\
                  " ------------------------------- \n"\
-                 " || a | a | a | a | a | a | a || \n"\
+                 " || X | X | X | X | X | X | X || \n"\
                  " ------------------------------- \n"\
-                 " || a | a | a | a | a | a | a || \n"\
+                 " || X | X | X | X | X | X | X || \n"\
                  " ------------------------------- \n"\
-                 " || a | a | a | a | a | a | a || \n"\
+                 " || X | X | X | X | X | X | X || \n"\
                  " ------------------------------- \n\n")
       end
     end
@@ -221,6 +226,7 @@ describe State do
       it "returns a formatted string representing the State" do
         p1 = Player.new("P1", "X")
         p2 = Player.new("P2", "O")
+
         empty_state = State.new(p1, [p1, p2],
                                 Board.create_empty(7, 6, 39),
                                 nil, 39)
@@ -231,7 +237,6 @@ describe State do
             empty_state.board.add_piece(h_pos, ((10 * x) + y))
           end
         end
-        empty_state.last_square = empty_state.board.squares[5]
         expect(empty_state.to_s)
           .to eq("\n              It's a tie!              \n\n"\
                  "      [1] [2] [3] [4] [5] [6] [7]      \n"\

@@ -7,7 +7,7 @@ describe Board do
   end
 
   describe ".create_empty" do
-    context "when given 3 arguments" do
+    context "when given 3 arguments (width, height, line_width)" do
       it "returns a Board object" do
         expect(empty_board).to be_an_instance_of(Board)
       end
@@ -32,7 +32,7 @@ describe Board do
   end
 
   describe "#new" do
-    context "when given 4 arguments" do
+    context "when given 4 arguments (width, height, squares, line_width)" do
       it "returns a Board object" do
         expect(board).to be_an_instance_of(Board)
       end
@@ -76,7 +76,7 @@ describe Board do
   end
 
   describe "#rows" do
-    it "returns a collection of rows" do
+    it "returns a collection of Rows" do
       expect(board.rows.all? { |row| row.instance_of?(Row) }).to be(true)
     end
 
@@ -86,7 +86,7 @@ describe Board do
   end
 
   describe "#cols" do
-    it "returns a collection of columns" do
+    it "returns a collection of Columns" do
       expect(board.cols.all? { |col| col.instance_of?(Column) }).to be(true)
     end
 
@@ -112,7 +112,7 @@ describe Board do
         2.upto(5) do |h_pos|
           empty_board.add_piece(h_pos, :a)
         end
-        target_square = empty_board.squares[6]
+        target_square = empty_board.squares[12]
         expect(empty_board.win?(target_square)).to be(true)
       end
     end
@@ -193,7 +193,16 @@ describe Board do
   end
 
   describe "#add_piece" do
-    context "when given an invalid horizontal position" do
+    context "when targetted at a full column" do
+      it "returns false" do
+        empty_board.height.times do
+          empty_board.add_piece(1, :a)
+        end
+        expect(empty_board.add_piece(1, :a)).to be(false)
+      end
+    end
+
+    context "when targetted off the board" do
       it "returns false" do
         expect(empty_board.add_piece(0, :a)).to be(false)
       end

@@ -19,7 +19,7 @@ describe Game do
   end
 
   describe "#new" do
-    context "when given 1 argument" do
+    context "when given 1 argument (state)" do
       it "returns a Game object" do
         expect(custom_game).to be_an_instance_of(Game)
       end
@@ -39,7 +39,7 @@ describe Game do
   end
 
   describe "#state" do
-    it "returns the correct_state" do
+    it "returns the correct state" do
       expect(custom_game.state).to eq(:a)
     end
   end

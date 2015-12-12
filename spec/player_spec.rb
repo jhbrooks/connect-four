@@ -1,10 +1,10 @@
 require "spec_helper"
 
 describe Player do
-  let(:player) { Player.new("a", "X") }
+  let(:player) { Player.new(:a, "X") }
 
   describe "#new" do
-    context "when given 2 arguments" do
+    context "when given 2 arguments (name, mark)" do
       it "returns a Player object" do
         expect(player).to be_an_instance_of(Player)
       end
@@ -25,7 +25,7 @@ describe Player do
 
   describe "#name" do
     it "returns the correct name" do
-      expect(player.name).to eq("a")
+      expect(player.name).to eq(:a)
     end
   end
 

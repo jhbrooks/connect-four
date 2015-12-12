@@ -5,7 +5,7 @@ describe Arrangement do
   let(:arrangement) { Arrangement.new([:a, :b, :c]) }
 
   describe ".create_empty" do
-    context "when given 1 argument" do
+    context "when given 1 argument (length)" do
       it "returns an Arrangement object" do
         expect(empty_arrangement).to be_an_instance_of(Arrangement)
       end
@@ -30,7 +30,7 @@ describe Arrangement do
   end
 
   describe "#new" do
-    context "when given 1 argument" do
+    context "when given 1 argument (squares)" do
       it "returns an Arrangement object" do
         expect(arrangement).to be_an_instance_of(Arrangement)
       end
@@ -177,7 +177,7 @@ describe Row do
   let(:row) { Row.new(1, [:a, :b, :c], 0) }
 
   describe ".create_empty" do
-    context "when given 3 arguments" do
+    context "when given 3 arguments (v_pos, width, line_width)" do
       it "returns a Row object" do
         expect(empty_row).to be_an_instance_of(Row)
       end
@@ -202,7 +202,7 @@ describe Row do
   end
 
   describe "#new" do
-    context "when given 3 arguments" do
+    context "when given 3 arguments (v_pos, squares, line_width)" do
       it "returns a Row object" do
         expect(row).to be_an_instance_of(Row)
       end
@@ -245,7 +245,7 @@ describe Column do
   let(:col) { Column.new(1, [:a, :b, :c]) }
 
   describe ".create_empty" do
-    context "when given 2 arguments" do
+    context "when given 2 arguments (h_pos, height)" do
       it "returns a Column object" do
         expect(empty_col).to be_an_instance_of(Column)
       end
@@ -269,7 +269,7 @@ describe Column do
   end
 
   describe "#new" do
-    context "when given 2 arguments" do
+    context "when given 2 arguments (h_pos, squares)" do
       it "returns a Column object" do
         expect(col).to be_an_instance_of(Column)
       end

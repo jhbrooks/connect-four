@@ -5,7 +5,7 @@ describe Square do
   let(:square) { Square.new(1, 2, :a) }
 
   describe ".create_empty" do
-    context "when given 2 arguments" do
+    context "when given 2 arguments (h_pos, v_pos)" do
       it "returns a Square object" do
         expect(empty_square).to be_an_instance_of(Square)
       end
@@ -30,7 +30,7 @@ describe Square do
   end
 
   describe "#new" do
-    context "when given 3 arguments" do
+    context "when given 3 arguments (h_pos, v_pos, piece)" do
       it "returns a Square object" do
         expect(square).to be_an_instance_of(Square)
       end
@@ -96,7 +96,7 @@ describe Square do
 
     context "when the second object lacks a piece" do
       it "returns false" do
-        expect(square == :a).to be(false)
+        expect(square).to_not eq(:a)
       end
     end
   end
