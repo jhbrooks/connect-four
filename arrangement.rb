@@ -1,3 +1,4 @@
+# Only required for .create_empty, so only required for testing
 require_relative "./square.rb"
 
 # This class handles Arrangements of squares, such as rows or columns.
@@ -5,6 +6,7 @@ require_relative "./square.rb"
 class Arrangement
   attr_reader :squares
 
+  # Only required for testing
   def self.create_empty(length)
     squares = []
     length.times do |i|
@@ -47,26 +49,25 @@ class Arrangement
   end
 end
 
-# This class handles Rows of squares
+# This class handles Rows of squares.
 # Rows are special because:
-# * They have a vertical position
 # * They have a line width (for display)
 # * They have a #to_s method (for display)
 #   * #to_s assumes the Row's bottom square is the one on the far right
 class Row < Arrangement
-  attr_reader :v_pos, :line_width
+  attr_reader :line_width
 
+  # Only required for testing
   def self.create_empty(v_pos, width, line_width)
     squares = []
     width.times do |i|
       squares << (Square.create_empty(i + 1, v_pos))
     end
 
-    new(v_pos, squares, line_width)
+    new(squares, line_width)
   end
 
-  def initialize(v_pos, squares, line_width)
-    @v_pos = v_pos
+  def initialize(squares, line_width)
     @squares = squares
     @line_width = line_width
   end
@@ -79,12 +80,13 @@ class Row < Arrangement
   end
 end
 
-# This class handles Columns of squares
+# This class handles Columns of squares.
 # Columns are special because:
-# * They have a horizontal position
+# * They have a horizontal position (for piece placement)
 class Column < Arrangement
   attr_reader :h_pos
 
+  # Only required for testing
   def self.create_empty(h_pos, height)
     squares = []
     height.times do |i|

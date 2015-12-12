@@ -14,6 +14,7 @@ class Piece
     end
   end
 
+  # Requires player object to have the #mark method
   def to_s
     "#{player.mark}"
   end

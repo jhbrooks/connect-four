@@ -1,6 +1,6 @@
 require_relative "./piece.rb"
 
-# The class handles States of games of Connect Four
+# This class handles States of games of Connect Four
 class State
   attr_reader :players, :board, :line_width
   attr_accessor :current_player, :last_square
@@ -10,14 +10,19 @@ class State
     @players = players
     @board = board
     @last_square = last_square
-    self.last_square ||= board.squares.first
     @line_width = line_width
   end
 
+  # Requires board object to have the #win? method
   def win?
-    board.win?(last_square)
+    if last_square.nil?
+      false
+    else
+      board.win?(last_square)
+    end
   end
 
+  # Requires board object to have the #full? method
   def tie?
     !win? && board.full?
   end
@@ -30,6 +35,7 @@ class State
     end
   end
 
+  # Requires board object to have the #add_piece method
   def add_piece(h_pos)
     if target = board.add_piece(h_pos, Piece.new(current_player))
       self.last_square = target
@@ -40,7 +46,7 @@ class State
 
   def to_s
     f_string = "\n#{status_string.center(line_width)}\n\n"
-    f_string << (board.to_s)
+    f_string << "#{board}"
   end
 
   private

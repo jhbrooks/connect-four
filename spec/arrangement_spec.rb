@@ -174,7 +174,7 @@ end
 
 describe Row do
   let(:empty_row) { Row.create_empty(1, 7, 33) }
-  let(:row) { Row.new(1, [:a, :b, :c], 0) }
+  let(:row) { Row.new([:a, :b, :c], 0) }
 
   describe ".create_empty" do
     context "when given 3 arguments (v_pos, width, line_width)" do
@@ -202,28 +202,22 @@ describe Row do
   end
 
   describe "#new" do
-    context "when given 3 arguments (v_pos, squares, line_width)" do
+    context "when given 2 arguments (squares, line_width)" do
       it "returns a Row object" do
         expect(row).to be_an_instance_of(Row)
       end
     end
 
-    context "when given fewer than 3 arguments" do
+    context "when given fewer than 2 arguments" do
       it "raises an ArgumentError" do
         expect { Row.new }.to raise_error(ArgumentError)
       end
     end
 
-    context "when given more than 3 arguments" do
+    context "when given more than 2 arguments" do
       it "raises an ArgumentError" do
-        expect { Row.new(:a, :b, :c, :d) }.to raise_error(ArgumentError)
+        expect { Row.new(:a, :b, :c) }.to raise_error(ArgumentError)
       end
-    end
-  end
-
-  describe "#v_pos" do
-    it "returns the correct vertical position" do
-      expect(row.v_pos).to eq(1)
     end
   end
 

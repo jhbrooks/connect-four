@@ -1,8 +1,8 @@
+require_relative "./player.rb"
 require_relative "./state.rb"
 require_relative "./board.rb"
-require_relative "./player.rb"
 
-# The class handles Games of Connect Four
+# This class handles Games of Connect Four
 class Game
   attr_reader :state
 
@@ -17,6 +17,12 @@ class Game
     @state = state
   end
 
+  # Requires state object to have:
+  # * #add_piece
+  # * #win?
+  # * #tie?
+  # * #current_player
+  # * #next_player
   def play
     game_over = false
     until game_over

@@ -64,7 +64,7 @@ class Board
       row_squares = squares.select do |square|
         square.v_pos == v_pos
       end
-      rows << (Row.new(v_pos, row_squares, line_width))
+      rows << (Row.new(row_squares, line_width))
     end
     rows
   end

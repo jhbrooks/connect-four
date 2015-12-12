@@ -30,12 +30,6 @@ describe State do
           .to raise_error(ArgumentError)
       end
     end
-
-    context "when given nil for a last_square" do
-      it "sets last_square equal to the first of board's squares" do
-        expect(empty_state.last_square).to be(empty_state.board.squares.first)
-      end
-    end
   end
 
   describe "#current_player" do
@@ -79,6 +73,14 @@ describe State do
   describe "#line_width" do
     it "returns the correct line width" do
       expect(state.line_width).to eq(0)
+    end
+  end
+
+  describe "#win?" do
+    context "when no move has been made (last_square is nil)" do
+      it "returns false" do
+        expect(empty_state.win?).to be(false)
+      end
     end
   end
 
@@ -163,8 +165,7 @@ describe State do
     context "when targetted off the board" do
       it "leaves the last square unchanged" do
         empty_state.add_piece(0)
-        expect(empty_state.last_square)
-          .to be(empty_state.board.squares.first)
+        expect(empty_state.last_square).to be(nil)
       end
 
       it "returns false" do
