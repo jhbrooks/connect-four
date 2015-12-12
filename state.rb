@@ -1,5 +1,6 @@
 require_relative "./piece.rb"
 
+# The class handles States of games of Connect Four
 class State
   attr_reader :players, :board, :line_width
   attr_accessor :current_player, :last_square

@@ -1,6 +1,7 @@
 require_relative "./square.rb"
 require_relative "./arrangement.rb"
 
+# This class handles Boards for games of Connect Four
 class Board
   attr_reader :width, :height, :squares, :line_width, :rows, :cols, :diags
 
@@ -14,7 +15,7 @@ class Board
       end
     end
 
-    self.new(width, height, squares, line_width)
+    new(width, height, squares, line_width)
   end
 
   def initialize(width, height, squares, line_width)
@@ -28,7 +29,7 @@ class Board
   end
 
   def empty?
-    rows.all? { |row| row.empty? }
+    squares.all?(&:empty?)
   end
 
   def win?(square)
@@ -36,7 +37,7 @@ class Board
   end
 
   def full?
-    squares.none? { |square| square.empty? }
+    squares.none?(&:empty?)
   end
 
   def add_piece(h_pos, piece)
@@ -48,12 +49,9 @@ class Board
   end
 
   def to_s
-    dash_string = "#{'--' * 2}#{'---' * width}#{'-' * (width - 1)}"
-                  .center(line_width)
-    f_string = label_string.center(line_width)
+    f_string = label_string
     f_string << "\n#{dash_string}\n"
-    f_string << (rows.reverse.map { |row| row.to_s }
-                                  .join("\n#{dash_string}\n"))
+    f_string << (rows.reverse.map(&:to_s).join("\n#{dash_string}\n"))
     f_string << "\n#{dash_string}\n\n"
   end
 
@@ -92,7 +90,13 @@ class Board
 
   def create_down_diags
     down_diags = []
+    down_diags << create_bottom_down_diags
+    down_diags << create_right_down_diags
+    down_diags.flatten
+  end
 
+  def create_bottom_down_diags
+    bottom_down_diags = []
     width.times do |x|
       h_pos = x + 1
       v_pos = 1
@@ -106,9 +110,13 @@ class Board
         h_pos -= 1
         v_pos += 1
       end
-      down_diags << (Arrangement.new(down_diag_squares))
+      bottom_down_diags << (Arrangement.new(down_diag_squares))
     end
+    bottom_down_diags
+  end
 
+  def create_right_down_diags
+    right_down_diags = []
     height.times do |y|
       next if y == 0
       h_pos = width
@@ -123,15 +131,20 @@ class Board
         h_pos -= 1
         v_pos += 1
       end
-      down_diags << (Arrangement.new(down_diag_squares))
+      right_down_diags << (Arrangement.new(down_diag_squares))
     end
-
-    down_diags
+    right_down_diags
   end
 
   def create_up_diags
     up_diags = []
+    up_diags << create_left_up_diags
+    up_diags << create_bottom_up_diags
+    up_diags.flatten
+  end
 
+  def create_left_up_diags
+    left_up_diags = []
     height.times do |y|
       h_pos = 1
       v_pos = height - y
@@ -145,9 +158,13 @@ class Board
         h_pos += 1
         v_pos += 1
       end
-      up_diags << (Arrangement.new(up_diag_squares))
+      left_up_diags << (Arrangement.new(up_diag_squares))
     end
+    left_up_diags
+  end
 
+  def create_bottom_up_diags
+    bottom_up_diags = []
     width.times do |x|
       next if x == 0
       h_pos = x + 1
@@ -162,28 +179,28 @@ class Board
         h_pos += 1
         v_pos += 1
       end
-      up_diags << (Arrangement.new(up_diag_squares))
+      bottom_up_diags << (Arrangement.new(up_diag_squares))
     end
-
-    up_diags
+    bottom_up_diags
   end
 
   def row_win?(square)
     rows.find do |row|
-      row.squares.map { |s| s.object_id }.include?(square.object_id)
+      row.squares.map(&:object_id).include?(square.object_id)
     end.win?
   end
 
   def col_win?(square)
     cols.find do |col|
-      col.squares.map { |s| s.object_id }.include?(square.object_id)
+      col.squares.map(&:object_id).include?(square.object_id)
     end.win?
   end
 
   def diag_win?(square)
-    diags.select do |diag|
-      diag.squares.map { |s| s.object_id }.include?(square.object_id)
-    end.any? { |diag| diag.win? }
+    target_diags = diags.select do |diag|
+      diag.squares.map(&:object_id).include?(square.object_id)
+    end
+    target_diags.any?(&:win?)
   end
 
   def label_string
@@ -192,6 +209,10 @@ class Board
       h_pos = x + 1
       label_nums << h_pos
     end
-    label_nums.map { |n| "[#{n}]" }.join(" ")
+    label_nums.map { |n| "[#{n}]" }.join(" ").center(line_width)
+  end
+
+  def dash_string
+    "#{'--' * 2}#{'---' * width}#{'-' * (width - 1)}".center(line_width)
   end
 end

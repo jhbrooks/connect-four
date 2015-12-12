@@ -3,7 +3,7 @@ require "spec_helper"
 describe Board do
   let(:empty_board) { Board.create_empty(7, 6, 33) }
   let(:board) do
-   Board.new(7, 6, [Square.new(1, 1, :a), Square.new(2, 2, :b)], 0)
+    Board.new(7, 6, [Square.new(1, 1, :a), Square.new(2, 2, :b)], 0)
   end
 
   describe ".create_empty" do
@@ -26,7 +26,7 @@ describe Board do
     context "when given more than 3 arguments" do
       it "raises an ArgumentError" do
         expect { Board.create_empty(:a, :b, :c, :d) }
-               .to raise_error(ArgumentError)
+          .to raise_error(ArgumentError)
       end
     end
   end
@@ -98,7 +98,7 @@ describe Board do
   describe "#diags" do
     it "returns a collection of Arrangements" do
       expect(board.diags.all? { |col| col.instance_of?(Arrangement) })
-            .to be(true)
+        .to be(true)
     end
 
     it "returns a collection of the correct length ((w + h - 1) * 2)" do

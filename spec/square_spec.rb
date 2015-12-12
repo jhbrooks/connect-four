@@ -24,7 +24,7 @@ describe Square do
     context "when given more than 2 argument" do
       it "raises an ArgumentError" do
         expect { Square.create_empty(:a, :b, :c) }
-               .to raise_error(ArgumentError)
+          .to raise_error(ArgumentError)
       end
     end
   end

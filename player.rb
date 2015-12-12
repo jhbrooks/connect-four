@@ -1,3 +1,4 @@
+# This class handles Players
 class Player
   attr_reader :name, :mark
 
@@ -7,6 +8,6 @@ class Player
   end
 
   def to_s
-  	"#{name}"
+    "#{name}"
   end
 end

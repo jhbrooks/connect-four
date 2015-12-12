@@ -2,6 +2,7 @@ require_relative "./state.rb"
 require_relative "./board.rb"
 require_relative "./player.rb"
 
+# The class handles Games of Connect Four
 class Game
   attr_reader :state
 
@@ -9,7 +10,7 @@ class Game
     p1 = Player.new("P1", "X")
     p2 = Player.new("P2", "O")
 
-    self.new(State.new(p1, [p1, p2], Board.create_empty(7, 6, 80), nil, 80))
+    new(State.new(p1, [p1, p2], Board.create_empty(7, 6, 80), nil, 80))
   end
 
   def initialize(state)
@@ -25,9 +26,7 @@ class Game
         puts "Please enter a move."
         move = gets.chomp!.to_i
         move_valid = state.add_piece(move)
-        unless move_valid
-          puts "Invalid move! Please try again.\n\n"
-        end
+        puts "Invalid move! Please try again.\n\n" unless move_valid
       end
       if state.win?
         game_over = true

@@ -1,3 +1,4 @@
+# This class handles Pieces
 class Piece
   attr_reader :player
 
@@ -6,9 +7,9 @@ class Piece
   end
 
   def ==(other)
-    begin
+    if other.methods.include?(:player)
       player == other.player
-    rescue(NoMethodError)
+    else
       false
     end
   end

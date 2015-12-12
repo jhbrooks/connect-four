@@ -25,7 +25,7 @@ describe State do
     context "when given more than 5 arguments" do
       it "raises an ArgumentError" do
         expect { State.new(:a, :b, :c, :d, :e, :f) }
-               .to raise_error(ArgumentError)
+          .to raise_error(ArgumentError)
       end
     end
   end
@@ -132,12 +132,12 @@ describe State do
       it "correctly updates the last square" do
         empty_state.add_piece(1)
         expect(empty_state.last_square)
-              .to eq(Square.new(1, 1, Piece.new(empty_state.current_player)))
+          .to eq(Square.new(1, 1, Piece.new(empty_state.current_player)))
       end
     end
 
     context "when targetted at a full column" do
-      before (:each) do
+      before(:each) do
         empty_state.board.height.times do
           empty_state.add_piece(1)
         end
@@ -146,7 +146,7 @@ describe State do
       it "leaves the last square unchanged" do
         empty_state.add_piece(1)
         expect(empty_state.last_square)
-              .to eq(Square.new(1, 6, Piece.new(empty_state.current_player)))
+          .to eq(Square.new(1, 6, Piece.new(empty_state.current_player)))
       end
 
       it "returns false" do
@@ -158,7 +158,7 @@ describe State do
       it "leaves the last square unchanged" do
         empty_state.add_piece(0)
         expect(empty_state.last_square)
-              .to be(empty_state.board.squares.first)
+          .to be(empty_state.board.squares.first)
       end
 
       it "returns false" do
@@ -171,21 +171,21 @@ describe State do
     context "with no win or tie present" do
       it "returns a formatted string representing the State" do
         expect(empty_state.to_s)
-              .to eq("\n    It is P1's turn to play.     \n\n"\
-                     "   [1] [2] [3] [4] [5] [6] [7]   \n"\
-                     " ------------------------------- \n"\
-                     " ||   |   |   |   |   |   |   || \n"\
-                     " ------------------------------- \n"\
-                     " ||   |   |   |   |   |   |   || \n"\
-                     " ------------------------------- \n"\
-                     " ||   |   |   |   |   |   |   || \n"\
-                     " ------------------------------- \n"\
-                     " ||   |   |   |   |   |   |   || \n"\
-                     " ------------------------------- \n"\
-                     " ||   |   |   |   |   |   |   || \n"\
-                     " ------------------------------- \n"\
-                     " ||   |   |   |   |   |   |   || \n"\
-                     " ------------------------------- \n\n")
+          .to eq("\n    It is P1's turn to play.     \n\n"\
+                 "   [1] [2] [3] [4] [5] [6] [7]   \n"\
+                 " ------------------------------- \n"\
+                 " ||   |   |   |   |   |   |   || \n"\
+                 " ------------------------------- \n"\
+                 " ||   |   |   |   |   |   |   || \n"\
+                 " ------------------------------- \n"\
+                 " ||   |   |   |   |   |   |   || \n"\
+                 " ------------------------------- \n"\
+                 " ||   |   |   |   |   |   |   || \n"\
+                 " ------------------------------- \n"\
+                 " ||   |   |   |   |   |   |   || \n"\
+                 " ------------------------------- \n"\
+                 " ||   |   |   |   |   |   |   || \n"\
+                 " ------------------------------- \n\n")
       end
     end
 
@@ -199,21 +199,21 @@ describe State do
         end
         empty_state.last_square = empty_state.board.squares[5]
         expect(empty_state.to_s)
-              .to eq("\n           P1 has won!           \n\n"\
-                     "   [1] [2] [3] [4] [5] [6] [7]   \n"\
-                     " ------------------------------- \n"\
-                     " || a | a | a | a | a | a | a || \n"\
-                     " ------------------------------- \n"\
-                     " || a | a | a | a | a | a | a || \n"\
-                     " ------------------------------- \n"\
-                     " || a | a | a | a | a | a | a || \n"\
-                     " ------------------------------- \n"\
-                     " || a | a | a | a | a | a | a || \n"\
-                     " ------------------------------- \n"\
-                     " || a | a | a | a | a | a | a || \n"\
-                     " ------------------------------- \n"\
-                     " || a | a | a | a | a | a | a || \n"\
-                     " ------------------------------- \n\n")
+          .to eq("\n           P1 has won!           \n\n"\
+                 "   [1] [2] [3] [4] [5] [6] [7]   \n"\
+                 " ------------------------------- \n"\
+                 " || a | a | a | a | a | a | a || \n"\
+                 " ------------------------------- \n"\
+                 " || a | a | a | a | a | a | a || \n"\
+                 " ------------------------------- \n"\
+                 " || a | a | a | a | a | a | a || \n"\
+                 " ------------------------------- \n"\
+                 " || a | a | a | a | a | a | a || \n"\
+                 " ------------------------------- \n"\
+                 " || a | a | a | a | a | a | a || \n"\
+                 " ------------------------------- \n"\
+                 " || a | a | a | a | a | a | a || \n"\
+                 " ------------------------------- \n\n")
       end
     end
 
@@ -221,7 +221,7 @@ describe State do
       it "returns a formatted string representing the State" do
         p1 = Player.new("P1", "X")
         p2 = Player.new("P2", "O")
-        empty_state = State.new(p1, [p1, p2], 
+        empty_state = State.new(p1, [p1, p2],
                                 Board.create_empty(7, 6, 39),
                                 nil, 39)
 
@@ -233,21 +233,21 @@ describe State do
         end
         empty_state.last_square = empty_state.board.squares[5]
         expect(empty_state.to_s)
-              .to eq("\n              It's a tie!              \n\n"\
-                     "      [1] [2] [3] [4] [5] [6] [7]      \n"\
-                     "    -------------------------------    \n"\
-                     " || 5 | 51 | 52 | 53 | 54 | 55 | 56 || \n"\
-                     "    -------------------------------    \n"\
-                     " || 4 | 41 | 42 | 43 | 44 | 45 | 46 || \n"\
-                     "    -------------------------------    \n"\
-                     " || 3 | 31 | 32 | 33 | 34 | 35 | 36 || \n"\
-                     "    -------------------------------    \n"\
-                     " || 2 | 21 | 22 | 23 | 24 | 25 | 26 || \n"\
-                     "    -------------------------------    \n"\
-                     " || 1 | 11 | 12 | 13 | 14 | 15 | 16 || \n"\
-                     "    -------------------------------    \n"\
-                     " || 0 | 01 | 02 | 03 | 04 | 05 | 06 || \n"\
-                     "    -------------------------------    \n\n")
+          .to eq("\n              It's a tie!              \n\n"\
+                 "      [1] [2] [3] [4] [5] [6] [7]      \n"\
+                 "    -------------------------------    \n"\
+                 " || 5 | 51 | 52 | 53 | 54 | 55 | 56 || \n"\
+                 "    -------------------------------    \n"\
+                 " || 4 | 41 | 42 | 43 | 44 | 45 | 46 || \n"\
+                 "    -------------------------------    \n"\
+                 " || 3 | 31 | 32 | 33 | 34 | 35 | 36 || \n"\
+                 "    -------------------------------    \n"\
+                 " || 2 | 21 | 22 | 23 | 24 | 25 | 26 || \n"\
+                 "    -------------------------------    \n"\
+                 " || 1 | 11 | 12 | 13 | 14 | 15 | 16 || \n"\
+                 "    -------------------------------    \n"\
+                 " || 0 | 01 | 02 | 03 | 04 | 05 | 06 || \n"\
+                 "    -------------------------------    \n\n")
       end
     end
   end

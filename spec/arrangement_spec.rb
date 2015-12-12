@@ -24,7 +24,7 @@ describe Arrangement do
     context "when given more than 1 argument" do
       it "raises an ArgumentError" do
         expect { Arrangement.create_empty(:a, :b) }
-               .to raise_error(ArgumentError)
+          .to raise_error(ArgumentError)
       end
     end
   end
@@ -107,7 +107,7 @@ describe Arrangement do
 
       it "doesn't add a piece to any square above that square" do
         empty_arrangement.add_piece(:a)
-        expect(squares_above.all? { |square| square.empty? }).to be(true)
+        expect(squares_above.all?(&:empty?)).to be(true)
       end
 
       it "returns the square where the piece was added" do
@@ -128,7 +128,7 @@ describe Arrangement do
         empty_arrangement.squares[0...1]
       end
 
-      before (:each) do
+      before(:each) do
         empty_arrangement.add_piece(:a)
       end
 
@@ -139,7 +139,7 @@ describe Arrangement do
 
       it "doesn't add a piece to any square above that square" do
         empty_arrangement.add_piece(:b)
-        expect(squares_above.all? { |square| square.empty? }).to be(true)
+        expect(squares_above.all?(&:empty?)).to be(true)
       end
 
       it "doesn't change the piece of any square below that square" do
@@ -153,7 +153,7 @@ describe Arrangement do
     end
 
     context "when the Arrangement is full" do
-      before (:each) do
+      before(:each) do
         empty_arrangement.squares.length.times do
           empty_arrangement.add_piece(:a)
         end
@@ -162,7 +162,7 @@ describe Arrangement do
       it "doesn't change the piece of any square" do
         empty_arrangement.add_piece(:b)
         expect(empty_arrangement.squares.all? { |square| square.piece == :a })
-              .to be(true)
+          .to be(true)
       end
 
       it "returns false" do
@@ -196,7 +196,7 @@ describe Row do
     context "when given more than 3 arguments" do
       it "raises an ArgumentError" do
         expect { Row.create_empty(:a, :b, :c, :d) }
-               .to raise_error(ArgumentError)
+          .to raise_error(ArgumentError)
       end
     end
   end

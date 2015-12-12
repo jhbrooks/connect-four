@@ -1,5 +1,7 @@
 require_relative "./square.rb"
 
+# This class handles Arrangements of squares, such as rows or columns.
+# An Arrangement's squares should be ordered, with the bottom square first.
 class Arrangement
   attr_reader :squares
 
@@ -9,7 +11,7 @@ class Arrangement
       squares << (Square.create_empty(length - i, length - i))
     end
 
-    self.new(squares)
+    new(squares)
   end
 
   def initialize(squares)
@@ -17,7 +19,7 @@ class Arrangement
   end
 
   def empty?
-    squares.all? { |square| square.empty? }
+    squares.all?(&:empty?)
   end
 
   def win?
@@ -36,7 +38,7 @@ class Arrangement
   end
 
   def add_piece(piece)
-    if target = squares.find { |square| square.empty? }
+    if target = squares.find(&:empty?)
       target.piece = piece
       target
     else
@@ -45,6 +47,12 @@ class Arrangement
   end
 end
 
+# This class handles Rows of squares
+# Rows are special because:
+# * They have a vertical position
+# * They have a line width (for display)
+# * They have a #to_s method (for display)
+#   * #to_s assumes the Row's bottom square is the one on the far right
 class Row < Arrangement
   attr_reader :v_pos, :line_width
 
@@ -54,7 +62,7 @@ class Row < Arrangement
       squares << (Square.create_empty(i + 1, v_pos))
     end
 
-    self.new(v_pos, squares, line_width)
+    new(v_pos, squares, line_width)
   end
 
   def initialize(v_pos, squares, line_width)
@@ -65,12 +73,15 @@ class Row < Arrangement
 
   def to_s
     f_string = "|| "
-    f_string << (squares.map { |square| square.to_s }.join(" | ").reverse)
+    f_string << (squares.map(&:to_s).join(" | ").reverse)
     f_string << " ||"
     f_string.center(line_width)
   end
 end
 
+# This class handles Columns of squares
+# Columns are special because:
+# * They have a horizontal position
 class Column < Arrangement
   attr_reader :h_pos
 
@@ -80,7 +91,7 @@ class Column < Arrangement
       squares << (Square.create_empty(h_pos, i + 1))
     end
 
-    self.new(h_pos, squares)
+    new(h_pos, squares)
   end
 
   def initialize(h_pos, squares)
